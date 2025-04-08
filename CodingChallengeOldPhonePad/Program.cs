@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace CodingChallengeOldPhonePad
 {
-    internal class Program
+    public class Program
     {
-        // main function with test cases
         static void Main(string[] args)
         {
             Console.WriteLine(OldPhonePad("33#"));  // Output should be "E"
@@ -17,10 +17,18 @@ namespace CodingChallengeOldPhonePad
             Console.WriteLine(OldPhonePad("8 88777444666*664#"));  // Output should be ?????
         }
 
+        //this function get the key was press and retunr it with the message
+        private static string GetPressedKey(string currValue, Dictionary<string, string> keypad, string msg)
+        {
+            int timesPressed = currValue.Length; //check how many times a key has been pressed
+            string value = currValue[0].ToString(); //convert character to string
+            return msg += keypad[value][(timesPressed - 1) % keypad[value].Length]; //get character, appent it to message and return it
+        }
+
         public static string OldPhonePad(string input)
         {
             string msg = ""; //variable to store the message 
-            string currValue = ""; //store current value in the loop 
+            string currValue = ""; //variable to store current value press
 
             //use Dictionary to store phone keypad 
             Dictionary<string, string> keypad = new Dictionary<string, string>();
@@ -33,17 +41,15 @@ namespace CodingChallengeOldPhonePad
             keypad.Add("8", "tuv");
             keypad.Add("9", "wxyz");
 
-            for (int i = 0; i < input.Length; i++) //iterates the input given
+            for (int i = 0; i < input.Length; i++) //iterates over the input of function
             {
                 char key = input[i]; //get one character
 
                 if (key == ' ') // if there is a pause
                 {
                     if (currValue.Length > 0)
-                    {
-                        int timesPressed = currValue.Length; //check how many times a key has been pressed
-                        string value = currValue[0].ToString(); // to conver character to string
-                        msg += keypad[value][(timesPressed - 1) % keypad[value].Length]; // get value of key from dictionary
+                    {                      
+                        msg = GetPressedKey(currValue, keypad, msg);
                         currValue = ""; // clear current value
                     }
                     continue; //skips iteration
@@ -54,9 +60,7 @@ namespace CodingChallengeOldPhonePad
                     // Process any pending key press before deleting
                     if (currValue.Length > 0 && currValue[0] != '*')
                     {
-                        int timesPressed = currValue.Length;
-                        string value = currValue[0].ToString();
-                        msg += keypad[value][(timesPressed - 1) % keypad[value].Length];
+                        msg = GetPressedKey(currValue, keypad, msg);
                         currValue = "";
                     }
 
@@ -71,9 +75,7 @@ namespace CodingChallengeOldPhonePad
                 {
                     if (currValue.Length > 0)
                     {
-                        int timesPressed = currValue.Length;
-                        string value = currValue[0].ToString();
-                        msg += keypad[value][(timesPressed - 1) % keypad[value].Length];
+                        msg = GetPressedKey(currValue, keypad, msg);
                         currValue = "";
                     }
                     break;
@@ -81,9 +83,7 @@ namespace CodingChallengeOldPhonePad
 
                 if (currValue.Length > 0 && currValue[0] != key) //check if there is a value and is current key is different to last key
                 {
-                    int timesPressed = currValue.Length;
-                    string value = currValue[0].ToString();
-                    msg += keypad[value][(timesPressed - 1) % keypad[value].Length];
+                    msg = GetPressedKey(currValue, keypad, msg);
                     currValue = ""; 
                 }
 
