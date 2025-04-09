@@ -4,24 +4,22 @@ namespace OldPhonePadTest
 {
     public class UnitTest1
     {
-        // Basic test for single letter
+        // Basic test for E
         [Fact]
         public void TestForOneChar()
         {
-            // to test press 1 key
             var output = Program.OldPhonePad("2#");
 
-            Assert.Equal("A", output);
+            Assert.Equal("E", output);
         }
 
-
-
-        // test to delete the last char
+        // Basic test for B
         [Fact]
-        public void DeleteCharTest()
+        public void TestForOneChar2()
         {
-            var result = Program.OldPhonePad("227*#");
-            Assert.Equal("B", result);
+            var output = Program.OldPhonePad("227*#");
+
+            Assert.Equal("B", output);
         }
 
         // Test with output = hello
@@ -30,6 +28,14 @@ namespace OldPhonePadTest
         {
             var result = Program.OldPhonePad("4433555 555666#");
             Assert.Equal("HELLO", result);
+        }
+
+        // test to delete the turing
+        [Fact]
+        public void DeleteCharTest()
+        {
+            var result = Program.OldPhonePad("8 88777444666*664");
+            Assert.Equal("TURING", result);
         }
 
 
